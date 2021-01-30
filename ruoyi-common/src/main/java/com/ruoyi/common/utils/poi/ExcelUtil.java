@@ -362,6 +362,9 @@ public class ExcelUtil<T> {
         return R.success(filename);
     }
 
+    /**
+     * 写入到磁盘文件
+     */
     private static String write(Workbook wb, String filename) {
         try {
             filename = encodingFilename(filename);
@@ -730,32 +733,33 @@ public class ExcelUtil<T> {
             // 设置行高
             row.setHeight(maxHeight);
             // 根据Excel中设置情况决定是否导出,有些情况需要保持为空,希望用户填写这一列.
-            if (attr.isExport()) {
-                // 创建cell
-                cell = row.createCell(column);
-                int align = attr.align().value();
-                cell.setCellStyle(styles.get("data" + (align >= 1 && align <= 3 ? align : "")));
-
-                // 用于读取对象中的属性
-                Object value = getTargetValue(vo, field, attr);
-                String dateFormat = attr.dateFormat();
-                String readConverterExp = attr.readConverterExp();
-                String separator = attr.separator();
-                String dictType = attr.dictType();
-                if (StringUtils.isNotEmpty(dateFormat) && StringUtils.isNotNull(value)) {
-                    cell.setCellValue(DateUtils.parseDateToStr(dateFormat, (Date) value));
-                } else if (StringUtils.isNotEmpty(readConverterExp) && StringUtils.isNotNull(value)) {
-                    cell.setCellValue(convertByExp(Convert.toStr(value), readConverterExp, separator));
-                } else if (StringUtils.isNotEmpty(dictType) && StringUtils.isNotNull(value)) {
-                    cell.setCellValue(convertDictByExp(Convert.toStr(value), dictType, separator));
-                } else if (value instanceof BigDecimal && -1 != attr.scale()) {
-                    cell.setCellValue((((BigDecimal) value).setScale(attr.scale(), attr.roundingMode())).toString());
-                } else {
-                    // 设置列类型
-                    setCellVo(value, attr, cell);
-                }
-                addStatisticsData_(column, Convert.toStr(value), attr);
+            if (!attr.isExport()) {
+                return;
             }
+            // 创建cell
+            cell = row.createCell(column);
+            int align = attr.align().value();
+            cell.setCellStyle(styles.get("data" + (align >= 1 && align <= 3 ? align : "")));
+
+            // 用于读取对象中的属性
+            Object value = getTargetValue(vo, field, attr);
+            String dateFormat = attr.dateFormat();
+            String readConverterExp = attr.readConverterExp();
+            String separator = attr.separator();
+            String dictType = attr.dictType();
+            if (StringUtils.isNotEmpty(dateFormat) && StringUtils.isNotNull(value)) {
+                cell.setCellValue(DateUtils.parseDateToStr(dateFormat, (Date) value));
+            } else if (StringUtils.isNotEmpty(readConverterExp) && StringUtils.isNotNull(value)) {
+                cell.setCellValue(convertByExp(Convert.toStr(value), readConverterExp, separator));
+            } else if (StringUtils.isNotEmpty(dictType) && StringUtils.isNotNull(value)) {
+                cell.setCellValue(convertDictByExp(Convert.toStr(value), dictType, separator));
+            } else if (value instanceof BigDecimal && -1 != attr.scale()) {
+                cell.setCellValue((((BigDecimal) value).setScale(attr.scale(), attr.roundingMode())).toString());
+            } else {
+                // 设置列类型
+                setCellVo(value, attr, cell);
+            }
+            addStatisticsData_(column, Convert.toStr(value), attr);
         } catch (Exception e) {
             log.error("导出Excel失败{}", e);
         }
@@ -918,13 +922,12 @@ public class ExcelUtil<T> {
      * @param field 字段
      * @param excel 注解
      * @return 最终的属性值
-     * @throws Exception
      */
     private static <T> Object getTargetValue(T vo, Field field, Excel excel) throws Exception {
         Object o = field.get(vo);
         if (StringUtils.isNotEmpty(excel.targetAttr())) {
             String target = excel.targetAttr();
-            if (target.indexOf(".") > -1) {
+            if (target.contains(".")) {
                 String[] targets = target.split("[.]");
                 for (String name : targets) {
                     o = getValue(o, name);
@@ -1004,7 +1007,9 @@ public class ExcelUtil<T> {
                 }
             }
         }
-        fields = fields.stream().sorted(Comparator.comparing(objects -> ((Excel) objects[1]).sort())).collect(Collectors.toList());
+        fields = fields.stream()
+                .sorted(Comparator.comparing(objects -> ((Excel) objects[1]).sort()))
+                .collect(Collectors.toList());
         return fields;
     }
 
