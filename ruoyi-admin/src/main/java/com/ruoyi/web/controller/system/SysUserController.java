@@ -13,6 +13,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.common.utils.poi.SheetData;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.system.service.ISysRoleService;
@@ -61,9 +62,11 @@ public class SysUserController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:user:export')")
     @GetMapping("/export")
     public R export(SysUser user) {
-        List<SysUser> list = userService.selectUserList(user);
-        ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
-        return util.exportExcel(list, "用户数据");
+        SheetData sd1 = new SheetData(userService.selectUserList(user), "用户数据");
+        SheetData sd2 = new SheetData(this.roleService.selectRoleAll(), "角色数据");
+        // ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
+        // return util.exportExcel(list, "用户数据");
+        return ExcelUtil.export(sd1, sd2);
     }
 
     @Log(title = "用户管理", businessType = BusinessType.IMPORT)
