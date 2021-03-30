@@ -1,0 +1,60 @@
+package ${packageName}.dao;
+
+
+import ${packageName}.entity.${ClassName};
+import com.github.pagehelper.Page;
+
+/**
+ * ${functionName}Mapper接口
+ *
+ * @author ${author}
+ */
+public interface ${ClassName}Mapper {
+    /**
+     * 查询${functionName}
+     *
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return ${functionName}
+     */
+    ${ClassName} selectById(${pkColumn.javaType} ${pkColumn.javaField});
+
+    /**
+     * 查询${functionName}列表
+     *
+     * @param bean ${functionName}
+     * @return ${functionName}集合
+     */
+    Page<${ClassName}> selectList(${ClassName} bean);
+
+    /**
+     * 新增${functionName}
+     *
+     * @param bean ${functionName}
+     * @return 结果
+     */
+    int insert(${ClassName} bean);
+
+    /**
+     * 修改${functionName}
+     *
+     * @param bean ${functionName}
+     * @return 结果
+     */
+    int update(${ClassName} bean);
+
+    /**
+     * 删除${functionName}
+     *
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return 结果
+     */
+    int deleteById(${pkColumn.javaType} ${pkColumn.javaField});
+
+    /**
+     * 批量删除${functionName}
+     *
+     * @param ${pkColumn.javaField}s 需要删除的数据ID
+     * @return 结果
+     */
+    int deleteByIds(${pkColumn.javaType}[] ${pkColumn.javaField}s);
+}

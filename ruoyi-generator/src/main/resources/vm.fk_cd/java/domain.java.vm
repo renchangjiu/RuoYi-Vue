@@ -1,0 +1,53 @@
+package ${packageName}.entity;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import lombok.Data;
+import lombok.experimental.Accessors;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import com.sbr.smwp.unit.annotation.Excel;
+
+
+/**
+ * ${functionName}对象 ${tableName}
+ *
+ * @author ${author}
+ */
+#if($table.crud)
+    #set($Entity="BaseEntity")
+#elseif($table.tree)
+    #set($Entity="TreeEntity")
+#end
+@Data
+@Accessors(chain = true)
+@ApiModel
+public class ${ClassName} {
+
+
+#foreach ($column in $columns)
+    #if(!$table.isSuperColumn($column.javaField))
+    /** $column.columnComment */
+        ###if($column.list)
+        #set($parentheseIndex=$column.columnComment.indexOf("（"))
+        #if($parentheseIndex != -1)
+            #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+        #else
+            #set($comment=$column.columnComment)
+        #end
+        #if($parentheseIndex != -1)
+        @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+        #elseif($column.javaType == 'Date')
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        @Excel(name = "${comment}", width = 30, dateFormat = "yyyy-MM-dd")
+        #else
+        @Excel(name = "${comment}"#if(${column.dictType} != ''), dictType = "${column.dictType}"#end)
+        #end
+        ###end
+    @ApiModelProperty(value = "${comment}")
+    private $column.javaType $column.javaField;
+
+    #end
+#end
+}
