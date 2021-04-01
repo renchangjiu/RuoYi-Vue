@@ -36,6 +36,19 @@ public class RuoYiConfig {
      */
     private boolean demoEnabled;
 
+    /**
+     * 是否启用验证码
+     */
+    private static boolean captchaEnabled;
+
+    public static boolean isCaptchaEnabled() {
+        return captchaEnabled;
+    }
+
+    public void setCaptchaEnabled(boolean captchaEnabled) {
+        RuoYiConfig.captchaEnabled = captchaEnabled;
+    }
+
     public static String getProfile() {
         return profile;
     }

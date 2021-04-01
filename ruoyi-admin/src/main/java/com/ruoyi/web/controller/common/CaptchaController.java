@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.common;
 
 import com.google.code.kaptcha.Producer;
+import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.redis.RedisCache;
@@ -75,5 +76,13 @@ public class CaptchaController {
         ajax.put("uuid", uuid);
         ajax.put("img", Base64.encode(os.toByteArray()));
         return ajax;
+    }
+
+    /**
+     * 是否启用验证码
+     */
+    @GetMapping(value = "captcha-enabled")
+    public R isCaptchaEnabled() {
+        return R.success(RuoYiConfig.isCaptchaEnabled());
     }
 }
