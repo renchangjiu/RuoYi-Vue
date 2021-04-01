@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.constant.HttpStatus;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
@@ -79,9 +79,9 @@ public class BaseController
      * @param rows 影响行数
      * @return 操作结果
      */
-    protected AjaxResult toAjax(int rows)
+    protected R toAjax(int rows)
     {
-        return rows > 0 ? AjaxResult.success() : AjaxResult.error();
+        return rows > 0 ? R.success() : R.error();
     }
 
     /**
@@ -90,7 +90,7 @@ public class BaseController
      * @param result 结果
      * @return 操作结果
      */
-    protected AjaxResult toAjax(boolean result)
+    protected R toAjax(boolean result)
     {
         return result ? success() : error();
     }
@@ -98,33 +98,33 @@ public class BaseController
     /**
      * 返回成功
      */
-    public AjaxResult success()
+    public R success()
     {
-        return AjaxResult.success();
+        return R.success();
     }
 
     /**
      * 返回失败消息
      */
-    public AjaxResult error()
+    public R error()
     {
-        return AjaxResult.error();
+        return R.error();
     }
 
     /**
      * 返回成功消息
      */
-    public AjaxResult success(String message)
+    public R success(String message)
     {
-        return AjaxResult.success(message);
+        return R.success(message);
     }
 
     /**
      * 返回失败消息
      */
-    public AjaxResult error(String message)
+    public R error(String message)
     {
-        return AjaxResult.error(message);
+        return R.error(message);
     }
 
     /**

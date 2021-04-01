@@ -26,13 +26,13 @@ public class R extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 初始化一个新创建的 AjaxResult 对象，使其表示一个空消息。
+     * 初始化一个新创建的 R 对象，使其表示一个空消息。
      */
     public R() {
     }
 
     /**
-     * 初始化一个新创建的 AjaxResult 对象
+     * 初始化一个新创建的 R 对象
      *
      * @param code 状态码
      * @param msg  返回内容
@@ -43,7 +43,7 @@ public class R extends HashMap<String, Object> {
     }
 
     /**
-     * 初始化一个新创建的 AjaxResult 对象
+     * 初始化一个新创建的 R 对象
      *
      * @param code 状态码
      * @param msg  返回内容
