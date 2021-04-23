@@ -3,6 +3,7 @@ package ${packageName}.entity;
 #foreach ($import in $importList)
 import ${import};
 #end
+import java.io.Serializable;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import io.swagger.annotations.ApiModel;
@@ -23,8 +24,9 @@ import com.sbr.smwp.unit.annotation.Excel;
 @Data
 @Accessors(chain = true)
 @ApiModel
-public class ${ClassName} {
+public class ${ClassName} implements Serializable {
 
+    private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
     #if(!$table.isSuperColumn($column.javaField))
