@@ -26,7 +26,7 @@ import ${packageName}.service.I${ClassName}Service;
  * @date ${datetime}
  */
 @Service
-public class ${ClassName}ServiceImpl implements I${ClassName}Service 
+public class ${ClassName}ServiceImpl implements I${ClassName}Service, BaseService
 {
     @Autowired
     private ${ClassName}Mapper ${className}Mapper;
@@ -38,9 +38,9 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
      * @return ${functionName}
      */
     @Override
-    public ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField})
+    public ${ClassName} selectById(${pkColumn.javaType} ${pkColumn.javaField})
     {
-        return ${className}Mapper.select${ClassName}ById(${pkColumn.javaField});
+        return ${className}Mapper.selectById(${pkColumn.javaField});
     }
 
     /**
@@ -50,7 +50,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
      * @return ${functionName}
      */
     @Override
-    public List<${ClassName}> select${ClassName}List(${ClassName} ${className})
+    public List<${ClassName}> selectList(${ClassName} ${className})
     {
         return ${className}Mapper.select${ClassName}List(${className});
     }
@@ -65,7 +65,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     @Transactional
 #end
     @Override
-    public int insert${ClassName}(${ClassName} ${className})
+    public int insert(${ClassName} ${className})
     {
 #foreach ($column in $columns)
 #if($column.javaField == 'createTime')
@@ -91,7 +91,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     @Transactional
 #end
     @Override
-    public int update${ClassName}(${ClassName} ${className})
+    public int update(${ClassName} ${className})
     {
 #foreach ($column in $columns)
 #if($column.javaField == 'updateTime')
